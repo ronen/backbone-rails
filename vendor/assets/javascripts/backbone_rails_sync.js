@@ -42,14 +42,26 @@
 
       var data = {}
 
-      var _attributes = method === 'patch' ? model.changedAttributes() || {} : params.attrs || model.toJSON();
+      var _attributes;
 
+      // Get model.changedAttributes when using PATCH
+      if(method === 'patch') {
+        _attributes = model.changedAttributes()
+
+        if(!_attributes)
+          return false;
+      } else {
+        _attributes = params.attrs || model.toJSON()
+      }
+
+      // Place attributes into data object considering paramRoot option
       if(model.paramRoot) {
         data[model.paramRoot] = _attributes;
       } else {
         data = _attributes;
       }
 
+      // Stringify data object
       params.data = JSON.stringify(data)
     }
 
