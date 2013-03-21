@@ -42,7 +42,8 @@
 
       var data = {}
 
-      var _attributes = params.attrs || model.toJSON();
+      var _attributes = method === 'patch' ? model.changedAttributes() : params.attrs || model.toJSON();
+
       if(model.paramRoot) {
         data[model.paramRoot] = _attributes;
       } else {
@@ -63,7 +64,7 @@
       model.trigger('sync:end');
       if (complete) complete(jqXHR, textStatus);
     };
-    
+
     var success = options.success;
     params.success = function(resp) {
       if (success) success(model, resp, options);
@@ -75,7 +76,7 @@
       if (error) error(model, xhr, options);
       model.trigger('error', model, xhr, options);
     };
-    
+
     // Make the request.
     return $.ajax(params);
   }
