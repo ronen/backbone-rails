@@ -42,7 +42,7 @@
 
       var data = {}
 
-      var _attributes = method === 'patch' ? model.changedAttributes() : params.attrs || model.toJSON();
+      var _attributes = method === 'patch' ? model.changedAttributes() || {} : params.attrs || model.toJSON();
 
       if(model.paramRoot) {
         data[model.paramRoot] = _attributes;
